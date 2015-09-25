@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	minId = 0
-	maxId = 1<<32 - 1 //ignore 32-bit systems compatibility
+	minId uint = 0
+	maxId uint = 1<<32 - 1 //ignore 32-bit systems compatibility
 )
 
 var (
