@@ -290,7 +290,7 @@ func GetExecUser(userSpec string, defaults *ExecUser, passwd, group io.Reader) (
 		}
 
 		// Must be inside valid uid range.
-		if user.Uid < minId || user.Uid > maxId {
+		if uint(user.Uid) < minId || uint(user.Uid) > maxId {
 			return nil, ErrRange
 		}
 
@@ -331,7 +331,7 @@ func GetExecUser(userSpec string, defaults *ExecUser, passwd, group io.Reader) (
 				}
 
 				// Ensure gid is inside gid range.
-				if user.Gid < minId || user.Gid > maxId {
+				if uint(user.Gid) < minId || uint(user.Gid) > maxId {
 					return nil, ErrRange
 				}
 
@@ -393,7 +393,7 @@ func GetAdditionalGroupsPath(additionalGroups []string, groupPath string) ([]int
 				return nil, fmt.Errorf("Unable to find group %s", ag)
 			}
 			// Ensure gid is inside gid range.
-			if gid < minId || gid > maxId {
+			if uint(gid) < minId || uint(gid) > maxId {
 				return nil, ErrRange
 			}
 			gidMap[gid] = struct{}{}
