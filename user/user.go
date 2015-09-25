@@ -21,8 +21,8 @@ var (
 type User struct {
 	Name  string
 	Pass  string
-	Uid   int
-	Gid   int
+	Uid   uint
+	Gid   uint
 	Gecos string
 	Home  string
 	Shell string
@@ -31,7 +31,7 @@ type User struct {
 type Group struct {
 	Name string
 	Pass string
-	Gid  int
+	Gid  uint
 	List []string
 }
 
@@ -192,8 +192,8 @@ func ParseGroupFilter(r io.Reader, filter func(Group) bool) ([]Group, error) {
 }
 
 type ExecUser struct {
-	Uid, Gid int
-	Sgids    []int
+	Uid, Gid uint
+	Sgids    []uint
 	Home     string
 }
 
@@ -255,7 +255,7 @@ func GetExecUser(userSpec string, defaults *ExecUser, passwd, group io.Reader) (
 
 	// Sgids slice *cannot* be nil.
 	if user.Sgids == nil {
-		user.Sgids = []int{}
+		user.Sgids = []uint{}
 	}
 
 	// allow for userArg to have either "user" syntax, or optionally "user:group" syntax
@@ -339,7 +339,7 @@ func GetExecUser(userSpec string, defaults *ExecUser, passwd, group io.Reader) (
 			}
 		} else if haveGroup {
 			// If implicit group format, fill supplementary gids.
-			user.Sgids = make([]int, len(groups))
+			user.Sgids = make([]uint, len(groups))
 			for i, group := range groups {
 				user.Sgids[i] = group.Gid
 			}
@@ -352,7 +352,7 @@ func GetExecUser(userSpec string, defaults *ExecUser, passwd, group io.Reader) (
 // GetAdditionalGroupsPath looks up a list of groups by name or group id
 // against the group file. If a group name cannot be found, an error will be
 // returned. If a group id cannot be found, it will be returned as-is.
-func GetAdditionalGroupsPath(additionalGroups []string, groupPath string) ([]int, error) {
+func GetAdditionalGroupsPath(additionalGroups []string, groupPath string) ([]uint, error) {
 	groupReader, err := os.Open(groupPath)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to open group file: %v", err)
@@ -371,7 +371,7 @@ func GetAdditionalGroupsPath(additionalGroups []string, groupPath string) ([]int
 		return nil, fmt.Errorf("Unable to find additional groups %v: %v", additionalGroups, err)
 	}
 
-	gidMap := make(map[int]struct{})
+	gidMap := make(map[uint]struct{})
 	for _, ag := range additionalGroups {
 		var found bool
 		for _, g := range groups {
@@ -399,7 +399,7 @@ func GetAdditionalGroupsPath(additionalGroups []string, groupPath string) ([]int
 			gidMap[gid] = struct{}{}
 		}
 	}
-	gids := []int{}
+	gids := []uint{}
 	for gid := range gidMap {
 		gids = append(gids, gid)
 	}
