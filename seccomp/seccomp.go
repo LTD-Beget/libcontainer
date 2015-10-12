@@ -28,6 +28,7 @@ const (
 	pfLD                 = 0x0
 	retKill              = 0x00000000
 	retTrap              = 0x00030000
+	retErrno             = 0x00050000
 	retAllow             = 0x7fff0000
 	modeFilter           = 0x2
 	prSetNoNewPrivileges = 0x26

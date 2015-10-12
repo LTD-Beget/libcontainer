@@ -15,6 +15,7 @@ const (
 	Kill  Action = iota - 3 // Kill the calling process of the syscall.
 	Trap                    // Trap and coredump the calling process of the syscall.
 	Allow                   // Allow the syscall to be completed.
+	Errno
 )
 
 // Syscall is the specified syscall, action, and any type of arguments
@@ -36,6 +37,8 @@ func (s *Syscall) scmpAction() uint32 {
 		return retTrap
 	case Kill:
 		return retKill
+	case Errno:
+		return retErrno
 	}
 	return actionErrno(uint32(s.Action))
 }
