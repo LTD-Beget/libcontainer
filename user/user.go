@@ -69,6 +69,12 @@ func parseLine(line string, v ...interface{}) {
 	}
 }
 
+func ParseUserSpec(userSpec string) (string, string) {
+	var userArg, groupArg string
+	parseLine(userSpec, &userArg, &groupArg)
+	return userArg, groupArg
+}
+
 func ParsePasswdFile(path string) ([]User, error) {
 	passwd, err := os.Open(path)
 	if err != nil {
